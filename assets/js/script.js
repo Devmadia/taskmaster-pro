@@ -33,7 +33,7 @@ var loadTasks = function() {
 
   // loop over object properties
   $.each(tasks, function(list, arr) {
-    console.log(list, arr);
+    
     // then loop over sub-array
     arr.forEach(function(task) {
       createTask(task.text, task.date, list);
@@ -45,8 +45,70 @@ var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+// event and callback function
+$(".list-group").on("click", "p", function() {
+  var text = $(this)                // grabs the inner text content of the current element represented by $(this)
+  .text()
+  .trim();
+  // $("textarea") tells jQuery to find all existing <textarea> elements
+  var textInput = $("<textarea>")   // allows us to create a dynamic element: <textarea>
+  $(this).replaceWith(textInput)    // swap out the existing <p> element with the new <textarea>
+  textInput.trigger("focus")        // automatically highlight the input box
+  .addClass("form-control")
+  .val(text);
+});
 
+// blur event will trigger as soon as the user interacts with anything other than the <textarea> element
+$(".list-group").on("blur", "textarea", function() {
+  // get the textarea's current value/text
+  var text = $(this)
+  .val()
+  .trim();
 
+  // get the parent ul's id attribute
+  var status = $(this)
+  .closest(".list-group")
+  .attr("id")                       // .replace() chained to attr(), which is returning the ID; it'll be "list-" followed by category
+  .replace("list-", "");            // JavaScript operator to find and replace text in a string
+  // tasks[status] returns an array, e.g. "toDo"
+  // task[status][index] returns the obj at a given index in array
+  tasks[status][index].text = text; // tasks[status][index].text returns the text property of the object at the given index.
+  saveTasks();
+
+  // get the task's position in the list of other li elements
+  var index = $(this)
+  .closest(".list-group-item")
+  .index();
+
+  // recreate p element
+  var taskP = $("<p>")
+  .addClass("m-1")
+  .text(text);
+
+  // replace textarea with p element
+  $(this).replaceWith(taskP);
+});
+
+// due date was clicked
+$(".list-group").on("click", "span", function() {
+  // get current text
+  var date = $(this)
+    .text()
+    .trim();
+
+  // create new input element
+  var dateInput = $("<input>")
+    // creating an <input> element and using jQuery's attr() method to set it as type="text"
+    .attr("type", "text")           // With two arguments, it sets an attribute (e.g., attr("type", "text")).      
+    .addClass("form-control")
+    .val(date);
+
+  // swap out elements
+  $(this).replaceWith(dateInput);
+
+  // automatically focus on new element
+  dateInput.trigger("focus");
+});
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
@@ -67,7 +129,7 @@ $("#task-form-modal .btn-primary").click(function() {
   var taskDate = $("#modalDueDate").val();
 
   if (taskText && taskDate) {
-    createTask(taskText, taskDate, "toDo");
+    createTask(taskText, taskDate, "toDo"); // passing in the task's description, due date, and type hardcoded as "toDo"
 
     // close modal
     $("#task-form-modal").modal("hide");
