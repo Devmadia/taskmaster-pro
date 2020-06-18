@@ -18,6 +18,11 @@ var createTask = function(taskText, taskDate, taskList) {
   $("#list-" + taskList).append(taskLi);
 };
 
+// jQuery selector to final all list-group elements then call a new jQuery UI method on them
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group")
+});
+
 var loadTasks = function() {
   tasks = JSON.parse(localStorage.getItem("tasks"));
 
