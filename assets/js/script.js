@@ -37,8 +37,8 @@ $(".card .list-group").sortable({      // sortable() turned every element with t
   out: function(event) {
     console.log("out", event.target);
   },
-  update: function(event) {
-    console.log("update", this);
+  update: function(event) {            // updated to jQuery this by wrapping it in $() to use with future jQuery methods
+    console.log($(this).children());
   }
 });
 
