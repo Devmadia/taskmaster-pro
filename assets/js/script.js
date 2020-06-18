@@ -13,7 +13,6 @@ var createTask = function(taskText, taskDate, taskList) {
   // append span and p element to parent li
   taskLi.append(taskSpan, taskP);
 
-
   // append to ul list on the page
   $("#list-" + taskList).append(taskLi);
 };
@@ -40,7 +39,7 @@ $(".card .list-group").sortable({      // sortable() turned every element with t
   update: function(event) {            // updated to jQuery this by wrapping it in $() to use with future jQuery methods
     var tempArr = [];                  // combines console logging values into an object and pushes them into an array
     // loop over current set of children in sortable list
-    $(this).children().each(function() {
+    $(this).children().each(function() {  //  use additional jQuery methods to strip out the task's description and due date
       var text = $(this)
         .find("p")
         .text()
@@ -69,20 +68,22 @@ $(".card .list-group").sortable({      // sortable() turned every element with t
   }
 });
 
-    $(this).children().each(function() {
-      var text = $(this)
-    .find("p")
-    .text()
-    .trim();
+// drag tasks to delete
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    console.log("drop");
+    ui.draggable.remove();
+  },
+  over: function(event, ui) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
+  }
+});
 
-      var date = $(this)
-        .find("span")
-        .text()
-        .trim();
-
-      console.log(text, date);
-    });
-  
 var loadTasks = function() {
   tasks = JSON.parse(localStorage.getItem("tasks"));
 
