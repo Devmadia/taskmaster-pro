@@ -240,6 +240,9 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 
+// datepicker
+$("#modalDueDate").datepicker();             // calendar appears when date field is clicked
+
 // remove all tasks
 $("#remove-tasks").on("click", function() {
   for (var key in tasks) {
