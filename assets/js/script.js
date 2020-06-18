@@ -241,7 +241,9 @@ $("#task-form-modal .btn-primary").click(function() {
 });
 
 // datepicker
-$("#modalDueDate").datepicker();             // calendar appears when date field is clicked
+$("#modalDueDate").datepicker({             // calendar appears when date field is clicked
+  minDate: 1                                // prevents users from selecting due dates that have passed
+});             
 
 // remove all tasks
 $("#remove-tasks").on("click", function() {
