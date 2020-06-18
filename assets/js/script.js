@@ -18,9 +18,28 @@ var createTask = function(taskText, taskDate, taskList) {
   $("#list-" + taskList).append(taskLi);
 };
 
+// sortable widget feature start 
 // jQuery selector to final all list-group elements then call a new jQuery UI method on them
-$(".card .list-group").sortable({
-  connectWith: $(".card .list-group")
+$(".card .list-group").sortable({      // sortable() turned every element with the class list-group into a sortable list
+  connectWith: $(".card .list-group"),  // connectWith property linked the sortable lists with any other list that have the same class
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",                     // tells jQuery to create a copy of the dragged element and move the copy instead of the original
+  activate: function(event) {
+    console.log("activate", this);
+  },
+  deactivate: function(event) {
+    console.log("deactivate", this);
+  },
+  over: function(event) {
+    console.log("over", event.target);
+  },
+  out: function(event) {
+    console.log("out", event.target);
+  },
+  update: function(event) {
+    console.log("update", this);
+  }
 });
 
 var loadTasks = function() {
