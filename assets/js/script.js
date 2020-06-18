@@ -157,6 +157,25 @@ $(".list-group").on("blur", "textarea", function() {
 // due date was clicked
 $(".list-group").on("click", "span", function() {
   // get current text
+  var date = $(this).text().trim();
+
+  // create new input element
+  var dateInput = $("<input>").attr("type", "text").addClass("form-control").val(date);
+
+  $(this).replaceWith(dateInput);
+
+  // enable jquery ui datepicker
+  dateInput.datepicker({
+    minDate: 1
+  });
+
+  // automatically bring up the calendar
+  dateInput.trigger("focus");
+});
+
+// due date was clicked
+$(".list-group").on("click", "span", function() {
+  // get current text
   var date = $(this)
     .text()
     .trim();
