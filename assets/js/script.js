@@ -71,6 +71,7 @@ var auditTask = function(taskEl) {
   else if (Math.abs(moment().diff(time, "days")) <= 2) {
     $(taskEl).addClass("list-group-item-warning");       // adds a yellow tint to the task background
   }
+  console.log(taskEl)
 };
 
 // event and callback function for edits
@@ -290,4 +291,11 @@ $("#remove-tasks").on("click", function() {
 // load tasks for the first time
 loadTasks();
 
+// timers
+setInterval(function() {
+  $(".card .list-group-item").each(function (el) {
+    auditTask(el);
+  });
+  // code to execute
+}, (1000 * 60) * 30);
 
