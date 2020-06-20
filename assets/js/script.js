@@ -182,19 +182,19 @@ $(".card .list-group").sortable({      // sortable() turned every element with t
   helper: "clone",                     // tells jQuery to create a copy of the dragged element and move the copy instead of the original
   activate: function(event) {
     $(this).addClass("dropover");
-    console.log("activate", this);
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
   deactivate: function(event) {
     $(this).removeClass("dropover");
-    console.log("deactivate", this);
+    $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function(event) {
     $(event.target).addClass("dropover-active");
-    console.log("over", event.target);
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   out: function(event) {
     $(this).removeClass("dropover-active")
-    console.log("out", event.target);
+    $(".bottom-trash").removeClass("bottom-trash-active");
   },
   update: function(event) {            // updated to jQuery this by wrapping it in $() to use with future jQuery methods
     var tempArr = [];                  // combines console logging values into an object and pushes them into an array
@@ -257,7 +257,7 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function() {
+$("#task-form-modal .btn-save").click(function() {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();

@@ -34,7 +34,7 @@ h6 {
 }
 
 .bottom-trash-drag {
-  transform: translateY();
+  transform: translateY(0);
   opacity: 1;
 }
 
