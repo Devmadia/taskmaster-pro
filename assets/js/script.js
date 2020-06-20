@@ -181,15 +181,19 @@ $(".card .list-group").sortable({      // sortable() turned every element with t
   tolerance: "pointer",
   helper: "clone",                     // tells jQuery to create a copy of the dragged element and move the copy instead of the original
   activate: function(event) {
+    $(this).addClass("dropover");
     console.log("activate", this);
   },
   deactivate: function(event) {
+    $(this).removeClass("dropover");
     console.log("deactivate", this);
   },
   over: function(event) {
+    $(event.target).addClass("dropover-active");
     console.log("over", event.target);
   },
   out: function(event) {
+    $(this).removeClass("dropover-active")
     console.log("out", event.target);
   },
   update: function(event) {            // updated to jQuery this by wrapping it in $() to use with future jQuery methods
