@@ -61,7 +61,15 @@ var auditTask = function(taskEl) {
 
   // apply new class if task is near/over due date
   if (moment().isAfter(time)) {
-    $(taskEl).addClass("list-group-item-danger");    // colored change to the task listed
+    $(taskEl).addClass("list-group-item-danger");    // adds a red tint to the task background for events overdue
+  }
+
+  // apply new class if task is near/over due date
+  if (moment().isAfter(time)) {
+    $(taskEl).addClass("list-group-item-danger");
+  } 
+  else if (Math.abs(moment().diff(time, "days")) <= 2) {
+    $(taskEl).addClass("list-group-item-warning");       // adds a yellow tint to the task background
   }
 };
 
@@ -77,12 +85,12 @@ $(".list-group").on("click", "p", function() {
 });
 
 // blur event will trigger as soon as the user interacts with anything other than the <textarea> element
-$(".list-group").on("change", "input[type='text']", function() {
+$(".list-group").on("blur", "textarea", function() {
   // get the textarea's current value/text
-  var date = $(this)
+  var text = $(this)
   .val()
   .trim();
-
+  
   // get the parent ul's id attribute
   var status = $(this)
   .closest(".list-group")
@@ -96,13 +104,14 @@ $(".list-group").on("change", "input[type='text']", function() {
 
   // tasks[status] returns an array, e.g. "toDo"
   // task[status][index] returns the obj at a given index in array
-  tasks[status][index].date = date; // tasks[status][index].text returns the text property of the object at the given index.
+  
+  tasks[status][index].text = text; // tasks[status][index].text returns the text property of the object at the given index.
   saveTasks();
 
   // recreate p element
   var taskP = $("<p>")
   .addClass("m-1")
-  .date(date);
+  .text(text);
 
   // replace textarea with p element
   $(this).replaceWith(taskP);
@@ -123,6 +132,9 @@ $(".list-group").on("click", "span", function() {
   // switch the elements
   $(this).replaceWith(dateInput);
 
+  // automatically bring up the calendar
+  dateInput.trigger("focus");
+
   // enable jquery ui datepicker
   dateInput.datepicker({
     minDate: 1,
@@ -132,39 +144,32 @@ $(".list-group").on("click", "span", function() {
     }
   });
 
-  // automatically bring up the calendar
-  dateInput.trigger("focus");
+ 
 });
 
 // value of due date was changed
 $(".list-group").on("change", "input[type='text']", function() {
   // get current text
-  var date = $(this)
-    .val()
-    .trim();
+  var date = $(this).val();
 
   // get the parent ul's id attribute
-  var status = $(this)
-    .closest(".list-group")
-    .attr("id")
-    .replace("list-", "");
+  var status = $(this).closest(".list-group").attr("id").replace("list-", "");
 
   // get the task's position in the list of other li elements
-  var index = $(this)
-    .closest(".list-group-item")
-    .index();
+  var index = $(this).closest(".list-group-item").index();
 
   // update task in array and re-save to localstorage
   tasks[status][index].date = date;
   saveTasks();
 
   // recreate span element with bootstrap classes
-  var taskSpan = $("<span>")
-    .addClass("badge badge-primary badge-pill")
-    .text(date);
+  var taskSpan = $("<span>").addClass("badge badge-primary badge-pill").text(date);
 
   // replace input with span element
   $(this).replaceWith(taskSpan);
+
+  // Pass task's <li> element into auditTask() to check new due date
+  auditTask($(taskSpan).closest(".list-group-item"));
 });
 
 // sortable widget feature start 
